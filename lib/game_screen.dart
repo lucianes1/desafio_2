@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'board.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+
 
   final int num_block = 100;
   final int timerWalker = 300;
@@ -24,6 +26,8 @@ class _GameScreenState extends State<GameScreen> {
   final List snake_tail = [17, 11, 52];
   final List ladder_top = [97];
   final List ladder_bottom = [67];
+
+  static AudioCache _audioCache = AudioCache();
 
   @override
   void initState() {
@@ -44,6 +48,7 @@ class _GameScreenState extends State<GameScreen> {
   int verifyStopSnakeHead(int block) {
     for (int i = 0; i < snake_head.length; i++) {
       if (block == snake_head[i]) {
+        _audioCache.play("audio/snake_sound.mp3");
         showdialogStopSnake();
         block = snake_tail[i];
       }
