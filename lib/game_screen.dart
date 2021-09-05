@@ -1,6 +1,5 @@
-import 'dart:async';
 import 'dart:math';
-import 'package:audioplayers/audio_cache.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'board.dart';
 import 'package:flutter/services.dart';
@@ -27,12 +26,17 @@ class _GameScreenState extends State<GameScreen> {
   final List ladder_top = [97];
   final List ladder_bottom = [67];
 
-  static AudioCache _audioCache = AudioCache();
+  final backGroundSound = AssetsAudioPlayer();
+  final rollDiceSound = AssetsAudioPlayer();
+  final snakeSound = AssetsAudioPlayer();
+  final winSound = AssetsAudioPlayer();
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    backGroundSound.open(Audio("assets/audio/background_sound.mp3"),);
     restartGame();
   }
 
@@ -48,7 +52,7 @@ class _GameScreenState extends State<GameScreen> {
   int verifyStopSnakeHead(int block) {
     for (int i = 0; i < snake_head.length; i++) {
       if (block == snake_head[i]) {
-        _audioCache.play("audio/snake_sound.mp3");
+        snakeSound.open(Audio("assets/audio/snake_sound.mp3"));
         showdialogStopSnake();
         block = snake_tail[i];
       }
@@ -124,6 +128,7 @@ class _GameScreenState extends State<GameScreen> {
       block_walk_p1 = block_walk_p1 - block_turn;
     } else if (block_walk_p1 == num_block) {
       block_walk_p1 = num_block;
+      winSound.open(Audio("assets/audio/win_sound.mp3"));
       showdialogWin("Jogador 1 venceu o jogo");
     }
 
@@ -157,6 +162,7 @@ class _GameScreenState extends State<GameScreen> {
       block_walk_p2 = block_walk_p2 - block_turn;
     } else if (block_walk_p2 == num_block) {
       block_walk_p2 = num_block;
+      winSound.open(Audio("assets/audio/win_sound.mp3"));
       showdialogWin("Jogador 2 venceu o jogo");
     }
 
@@ -166,6 +172,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void playDices() {
+    rollDiceSound.open(Audio("assets/audio/roll_dice_sound.mp3"));
     if (player_1) {
       rulesPlayerOne();
     } else {
@@ -226,7 +233,7 @@ class _GameScreenState extends State<GameScreen> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              "Você caiu na cabeça de uma cobra!",
+              "Você caiu em uma cobra!!",
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
