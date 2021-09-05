@@ -44,6 +44,7 @@ class _GameScreenState extends State<GameScreen> {
   int verifyStopSnakeHead(int block) {
     for (int i = 0; i < snake_head.length; i++) {
       if (block == snake_head[i]) {
+        showdialogStopSnake();
         block = snake_tail[i];
       }
     }
@@ -53,6 +54,9 @@ class _GameScreenState extends State<GameScreen> {
   int verifyStopLadderBottom(int block) {
     for (int i = 0; i < ladder_bottom.length; i++) {
       if (block == ladder_bottom[i]) {
+        AlertDialog(
+
+        );
         block = ladder_top[i];
       }
     }
@@ -171,7 +175,7 @@ class _GameScreenState extends State<GameScreen> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              "Fim de jogo",
+              "O jogo acabou!",
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -199,6 +203,49 @@ class _GameScreenState extends State<GameScreen> {
                 },
                 child: Text(
                   "Recomeçar",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  showdialogStopSnake() {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Você caiu na cabeça de uma cobra!",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Sssshhhhh!!!",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Continuar",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -281,7 +328,7 @@ class _GameScreenState extends State<GameScreen> {
                         children: [
                           Image.asset("assets/dice_${one_numberDice}.png"),
                           ElevatedButton(
-                            child: Text("Rolar dado"),
+                            child: Text("Jogar"),
                             onPressed: () {
                                 setState(() {
                                   playDices();
@@ -290,6 +337,14 @@ class _GameScreenState extends State<GameScreen> {
                           ),
                           Image.asset("assets/dice_${second_numberDice}.png"),
                         ],
+                      ),
+                      Text(
+                        "Jogador 1 esta na casa ${block_walk_p1}",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+                      ),
+                      Text(
+                        "Jogador 2 esta na casa ${block_walk_p2}",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
                       )
                     ],
                   ),
